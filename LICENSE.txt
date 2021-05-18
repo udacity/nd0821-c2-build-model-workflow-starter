@@ -1,4 +1,4 @@
-Copyright © 2012 - 2020, Udacity, Inc.
+Copyright © 2012 - 2021, Udacity, Inc.
 
 Udacity hereby grants you a license in and to the Educational Content, including
 but not limited to homework assignments, programming assignments, code samples,
