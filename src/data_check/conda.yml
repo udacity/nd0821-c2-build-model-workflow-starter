@@ -1,0 +1,11 @@
+name: data_check
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas=1.1.4
+  - pytest=6.2.2
+  - scipy=1.5.2
+  - pip=20.3.3
+  - pip:
+      - wandb==0.10.21

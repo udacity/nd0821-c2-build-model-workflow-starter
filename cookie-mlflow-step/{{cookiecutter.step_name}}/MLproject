@@ -1,0 +1,13 @@
+name: {{cookiecutter.step_name}}
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+{% for arg_name in cookiecutter.parameters.split(",") %}
+      {{arg_name}}:
+        description: ## ADD DESCRIPTION
+        type: string
+{% endfor %}
+
+    command: "python {{cookiecutter.script_name}} {% for n in cookiecutter.parameters.split(",") %} --{{n}} {{"{"}}{{n}}{{"}"}} {% endfor %}"

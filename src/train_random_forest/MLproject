@@ -1,0 +1,25 @@
+name: download_file
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+
+      train:
+        description: Train dataset
+        type: string
+
+      val:
+        description: Validation dataset
+        type: string
+
+      rf_config:
+        description: Random forest configuration. A path to a JSON file with the configuration that will
+                     be passed to the scikit-learn constructor for RandomForestRegressor.
+        type: string
+
+      output_artifact:
+        description: Name for the output artifact
+        type: string
+
+    command: "python run.py {train} {val} --rf_config {rf_config} --output_artifact {output_artifact}"
