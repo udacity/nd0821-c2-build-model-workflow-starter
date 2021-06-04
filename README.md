@@ -203,6 +203,10 @@ The pipeline is defined in the ``main.py`` file in the root of the starter kit. 
 contains some boilerplate code as well as the download step. Your task will be to develop the
 needed additional step, and then add them to the ``main.py`` file.
 
+__*NOTE*__: the modeling in this exercise should be considered a baseline. We kept the data cleaning and the modeling 
+simple because we want to focus on the MLops aspect of the analysis. It is possible with a little more effort to get
+a significantly-better model for this dataset.
+
 ### Exploratory Data Analysis (EDA)
 The scope of this section is to get an idea of how the process of an EDA works in the context of
 pipelines, during the data exploration phase. In a real scenario you would spend a lot more time
@@ -215,7 +219,7 @@ notebook can be understood by other people like your colleagues
    get a sample of the data. The pipeline will also upload it to Weights & Biases:
    
   ```bash
-  > mlflow run .
+  > mlflow run . -P steps=download
   ```
   
   You will see a message similar to:
@@ -223,9 +227,15 @@ notebook can be understood by other people like your colleagues
   ```
   2021-03-12 15:44:39,840 Uploading sample.csv to Weights & Biases
   ```
-  This tells you that the data have been uploaded to W&B as the artifact named ``sample.csv``.
+  This tells you that the data is going to be stored in W&B as the artifact named ``sample.csv``.
 
-2. Go in the ``notebook`` directory and start Jupyter, and then create a notebook called ``EDA``.
+2. Now execute the `eda` step:
+   ```bash
+   > mlflow run src/eda
+   ```
+   This will install Jupyter and all the dependencies for `pandas-profiling`, and open a Jupyter notebook instance.
+   Click on New -> Python 3 and create a new notebook. Rename it `EDA` by clicking on `Untitled` at the top, beside the
+   Jupyter logo.
 3. Within the notebook, fetch the artifact we just created (``sample.csv``) from W&B and read 
    it with pandas:
     
@@ -233,7 +243,7 @@ notebook can be understood by other people like your colleagues
     import wandb
     import pandas as pd
     
-    wandb.init(project="nyc_airbnb", group="eda", save_code=True)
+    run = wandb.init(project="nyc_airbnb", group="eda", save_code=True)
     local_path = wandb.use_artifact("sample.csv:latest").file()
     df = pd.read_csv(local_path)
     ```
@@ -241,52 +251,37 @@ notebook can be understood by other people like your colleagues
     code of the notebook is uploaded to W&B for versioning, so that each run of the notebook
     will be tied to the specific version of the code that run in that step.
 
-4. Print a summary (df.info()) and note the null values. Also, note how there are clearly 
-   outliers in the ``price`` column : 
-   
+4. Using `pandas-profiling`, create a profile:
    ```python
-    df['price'].describe(percentiles=[0.01, 0.05, 0.50, 0.95, 0.99])
-    count    20000.000000
-    mean       153.269050
-    std        243.325609
-    min          0.000000
-    1%          30.000000
-    5%          40.000000
-    50%        105.000000
-    95%        350.000000
-    99%        800.000000
-    max      10000.000000
-    Name: price, dtype: float64
+   import pandas_profiling
+   
+   profile = pandas_profiling.ProfileReport(df)
+   profile.to_widgets()
    ```
-   After talking to your stakeholders, you decide to consider from a minimum of $ 10 to a maximum
-   of $ 350 per night.
+   what do you notice? Look around and see what you can find. 
    
-5. Fix the little problems we have found in the data with the following code:
+   For example, there are missing values in a few columns and the column `last_review` is a 
+   date but it is in string format. Look also at the `price` column, and note the outliers. There are some zeros and 
+   some very high prices. After talking to your stakeholders, you decide to consider from a minimum of $ 10 to a 
+   maximum of $ 350 per night.
+   
+5. Fix some of the little problems we have found in the data with the following code:
     
-    ```python
-    # Drop outliers
-    min_price = 10
-    max_price = 350
-    idx = df['price'].between(min_price, max_price)
-    df = df[idx]
-   
-    # Convert last_review to datetime
-    df['last_review'] = pd.to_datetime(df['last_review'])
-
-    # Fill the null dates with an old date
-    df['last_review'].fillna(pd.to_datetime("2010-01-01"), inplace=True)
-
-    # If the reviews_per_month is nan it means that there is no review
-    df['reviews_per_month'].fillna(0, inplace=True)
-
-    # We can fill the names with a short string.
-    # DO NOT use empty strings here
-    df['name'].fillna('-', inplace=True)
-    df['host_name'].fillna('-', inplace=True)
-    ```
-6. Check with ``df.info()`` that all obvious problems have been solved
-7. Save and close the notebook, shutdown Jupyter, then go back to the root directory.
-8. Commit the code to github
+   ```python
+   # Drop outliers
+   min_price = 10
+   max_price = 350
+   idx = df['price'].between(min_price, max_price)
+   df = df[idx].copy()
+   # Convert last_review to datetime
+   df['last_review'] = pd.to_datetime(df['last_review'])
+   ```
+   Note how we did not impute missing values. We will do that in the inference pipeline, so we will be able to handle
+   missing values also in production.
+6. Create a new profile or check with ``df.info()`` that all obvious problems have been solved
+7. Terminate the run by running `run.finish()`
+8. Save the notebook, then close it (File -> Close and Halt). In the main Jupyter notebook page, click Quit in the
+   upper right to stop Jupyter. This will also terminate the mlflow run. DO NOT USE CRTL-C
 
 ## Data cleaning
 
@@ -296,7 +291,7 @@ with the cleaned data:
 
 1. Make sure you are in the root directory of the starter kit, then create a stub 
    for the new step. The new step should accept the parameters ``input_artifact`` 
-   (the input artifact), ``output_name`` (the name for the output artifact), 
+   (the input artifact), ``output_artifact`` (the name for the output artifact), 
    ``output_type`` (the type for the output artifact), ``output_description`` 
    (a description for the output artifact), ``min_price`` (the minimum price to consider)
    and ``max_price`` (the maximum price to consider):
@@ -308,7 +303,7 @@ with the cleaned data:
    job_type [my_step]: basic_cleaning
    short_description [My step]: A very basic data cleaning
    long_description [An example of a step using MLflow and Weights & Biases]: Download from W&B the raw dataset and apply some basic data cleaning, exporting the result to a new artifact
-   arguments [default]: input_artifact,output_name,output_type,output_description,min_price,max_price
+   parameters [parameter1,parameter2]: input_artifact,output_artifact,output_type,output_description,min_price,max_price
    ```
    This will create a directory ``src/basic_cleaning`` containing the basic files required 
    for a MLflow step: ``conda.yml``, ``MLproject`` and the script (which we named ``run.py``).
@@ -318,39 +313,22 @@ with the cleaned data:
    comments like ``INSERT TYPE HERE`` and ``INSERT DESCRIPTION HERE``). All parameters should be
    of type ``str`` except ``min_price`` and ``max_price`` that should be ``float``.
    
-3. Implement in the section marked ```# YOUR CODE HERE     #``` the data cleaning steps we 
-   have implemented in the notebook. Remember to use the ``logger`` instance already provided
-   to print meaningful messages to screen. For example, let's start by downloading the input 
-   artifact and read it with pandas:
+3. Implement in the section marked ```# YOUR CODE HERE     #``` the steps we 
+   have implemented in the notebook, including downloading the data from W&B. 
+   Remember to use the ``logger`` instance already provided to print meaningful messages to screen. 
    
-   ```python
-   logger.info(f"Fetching {args.input_artifact} from W&B...")
-   artifact_local_path = run.use_artifact(args.input_artifact).file()
-   
-   logger.info("Reading with pandas")
-   df = pd.read_csv(artifact_local_path)
-   ```
-   
-   **_REMEMBER__**: Whenever you are using a library (like pandas here), you MUST add it as 
-                    dependency in the ``conda.yml`` file. For example, here we are using pandas 
-                    so we must add it to ``conda.yml`` file, including a version:
-   ```yaml
-   dependencies:
-     - pip=20.3.3
-     - pandas=1.2.3
-     - pip:
-         - wandb==0.10.21
-   ```
-
-   Then implement the cleaning code we have used in the notebook, making sure to use 
-   ``args.min_price`` and ``args.max_price`` when dropping the outliers 
+   Make sure to use ``args.min_price`` and ``args.max_price`` when dropping the outliers 
    (instead of  hard-coding the values like we did in the notebook).
    Save the results to a CSV file called ``clean_sample.csv`` 
-   (``df.to_csv("clean_sample.csv", index=False)``) then upload it to W&B using:
+   (``df.to_csv("clean_sample.csv", index=False)``)
+   **_NOTE_**: Remember to use ``index=False`` when saving to CSV, otherwise the data checks in
+               the next step might fail because there will be an extra ``index`` column
+   
+   Then upload it to W&B using:
    
    ```python
    artifact = wandb.Artifact(
-        args.output_name,
+        args.output_artifact,
         type=args.output_type,
         description=args.output_description,
     )
@@ -358,8 +336,16 @@ with the cleaned data:
     run.log_artifact(artifact)
    ```
    
-   **_NOTE_**: Remember to use ``index=False`` when saving to CSV, otherwise the data checks in
-               the next step will fail!
+   **_REMEMBER__**: Whenever you are using a library (like pandas), you MUST add it as 
+                    dependency in the ``conda.yml`` file. For example, here we are using pandas 
+                    so we must add it to ``conda.yml`` file, including a version:
+   ```yaml
+   dependencies:
+     - pip=20.3.3
+     - pandas=1.2.3
+     - pip:
+         - wandb==0.10.31
+   ```
    
 4. Add the ``basic_cleaning`` step to the pipeline (the ``main.py`` file):
 
@@ -382,7 +368,7 @@ with the cleaned data:
             "main",
             parameters={
                 "input_artifact": "sample.csv:latest",
-                "output_name": "clean_sample.csv",
+                "output_artifact": "clean_sample.csv",
                 "output_type": "clean_sample",
                 "output_description": "Data with outliers and null values removed",
                 "min_price": config['etl']['min_price'],
@@ -390,7 +376,8 @@ with the cleaned data:
             },
         )
    ```
-5. Run the pipeline
+5. Run the pipeline. If you go to W&B, you will see the new artifact type `clean_sample` and within it the 
+   `clean_sample.csv` artifact
 
 ### Data testing
 After the cleaning, it is a good practice to put some tests that verify that the data does not
