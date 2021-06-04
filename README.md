@@ -16,7 +16,7 @@ In this project you will build such a pipeline.
   * [Cookie cutter](#cookie-cutter)
   * [The configuration](#the-configuration)
   * [Running the entire pipeline or just a selection of steps](#Running-the-entire-pipeline-or-just-a-selection-of-steps)
-  * [Pre-existing compponents](#pre-existing-components)
+  * [Pre-existing components](#pre-existing-components)
 - [Instructions](#instructions)
   * [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
   * [Data cleaning](#data-cleaning)
