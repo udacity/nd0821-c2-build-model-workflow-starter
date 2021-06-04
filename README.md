@@ -8,7 +8,7 @@ In this project you will build such a pipeline.
 
 ## Table of contents
 
-- [Introduction](#introduction)
+- [Introduction](#build-an-ML-Pipeline-for-Short-Term-Rental-Prices-in-NYC)
 - [Starter kit](#starter-kit)
   * [Preliminary steps](#preliminary-steps)
     + [Create environment](#create-environment)
