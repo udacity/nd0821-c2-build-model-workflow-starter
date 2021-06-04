@@ -175,6 +175,28 @@ You can see the parameters that they require by looking into their `MLproject` f
 - `get_data`: downloads the data. [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/get_data/MLproject)
 - `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/train_val_test_split/MLproject)
 
+## In case of errors
+When you make an error writing your `conda.yml` file, you might end up with an environment for the pipeline or one
+of the components that is corrupted. Most of the time `mlflow` realizes that and creates a new one every time you try
+to fix the problem. However, sometimes this does not happen, especially if the problem was in the `pip` dependencies.
+In that case, you might want to clean up all conda environments created by `mlflow` and try again. In order to do so,
+you can get a list of the environments you are about to remove by executing:
+
+```
+> conda info --envs | grep mlflow | cut -f1 -d" "
+```
+
+If you are ok with that list, execute this command to clean them up:
+
+**_NOTE_**: this will remove *ALL* the environments with a name starting with `mlflow`. Use at your own risk
+
+```
+> for e in $(conda info --envs | grep mlflow | cut -f1 -d" "); do conda uninstall --name $e --all -y;done
+```
+
+This will iterate over all the environments created by `mlflow` and remove them.
+
+
 ## Instructions
 
 The pipeline is defined in the ``main.py`` file in the root of the starter kit. The file already
@@ -532,22 +554,6 @@ This will drop rows in the dataset that are not in the proper geolocation.
 Then commit your change, make a new release (``1.0.1``) and retry (of course you need to use 
 ``-v 1.0.1`` when calling mlflow this time). Now the run should succeed and voit la', 
 you have trained your new model on the new data.
-
-## Cleaning up
-After you have finished, you might see that you have a lot of mlflow environments in your conda directory. You can
-see a list with:
-
-```
-> conda info --envs | grep mlflow | cut -f1 -d" "
-```
-
-If you want to clean them up, you can execute this:
-
-**_NOTE_**: this will remove *ALL* the environments with a name starting with `mlflow`. Use at your own risk
-
-```
-> for e in $(conda info --envs | grep mlflow | cut -f1 -d" "); do conda uninstall --name $e --all -y;done
-```
 
 ## License
 
