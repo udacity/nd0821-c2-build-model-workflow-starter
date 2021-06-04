@@ -106,7 +106,6 @@ venv.bak/
 # Pycharm
 .idea/
 
-*.csv
 *.DS_Store
 artifacts/
 wandb/
