@@ -29,6 +29,7 @@ In this project you will build such a pipeline.
   * [Visualize the pipeline](#visualize-the-pipeline)
   * [Release the pipeline](#release-the-pipeline)
   * [Train the model on a new data sample](#train-the-model-on-a-new-data-sample)
+- [Cleaning up](#cleaning-up)
 
 ## Preliminary steps
 ### Fork the Starter kit
@@ -531,6 +532,22 @@ This will drop rows in the dataset that are not in the proper geolocation.
 Then commit your change, make a new release (``1.0.1``) and retry (of course you need to use 
 ``-v 1.0.1`` when calling mlflow this time). Now the run should succeed and voit la', 
 you have trained your new model on the new data.
+
+## Cleaning up
+After you have finished, you might see that you have a lot of mlflow environments in your conda directory. You can
+see a list with:
+
+```
+> conda info --envs | grep mlflow | cut -f1 -d" "
+```
+
+If you want to clean them up, you can execute this:
+
+**_NOTE_**: this will remove *ALL* the environments with a name starting with `mlflow`. Use at your own risk
+
+```
+> for e in $(conda info --envs | grep mlflow | cut -f1 -d" "); do conda uninstall --name $e --all -y;done
+```
 
 ## License
 
