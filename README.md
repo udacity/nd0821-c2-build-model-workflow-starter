@@ -49,20 +49,21 @@ file provided in the root of the starter kit and activate it:
 
 #### Get API key for Weights and Biases
 Get your API key from W&B by going to [https://wandb.ai/authorize](https://wandb.ai/authorize) 
-and set this environment variable:
+and click on the + icon (copy to clipboard), then paste your key into this command:
 
 ```bash
-> export WANDB_API_KEY=[your API key]
+> wandb login [your API key]
 ```
 
-Then login to W&B:
-
-```bash
-> wandb login $WANDB_API_KEY
+You should see a message similar to:
+```
+wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/.netrc
 ```
 
 ### GitHub
-Create a repository named ``nyc_airbnb`` in your github account and commit your code there. 
+
+Create a repository named ``nyc_airbnb`` in your github account, copy there the content of the starter kit and
+commit and push. From now on, you will commit your code to the repo in your Github account. 
 Commit and push to the repository often while you make progress towards the solution. Remember 
 to add meaningful commit messages.
 
@@ -72,7 +73,6 @@ the cookiecutter and enter the required information. Remember to leave the defau
 For example:
 
 ```bash
-> pip install cookiecutter
 > cookiecutter cookie-mlflow-step -o src
 
 step_name [step_name]: basic_cleaning
@@ -124,7 +124,7 @@ easily overridden from the command line (see the section Running the pipeline).
 In order to run the pipeline you need to be in the root of the starter kit, then you can execute:
 
 ```bash
->  mlflow run . -P wandb_api_key=${WANDB_API_KEY}
+>  mlflow run .
 ```
 This will run the entire pipeline.
 
@@ -133,11 +133,11 @@ the ``download`` step (the steps are defined at the top of the ``main.py`` file,
 ``_steps`` list)
 
 ```bash
-> mlflow run . -P wandb_api_key=${WANDB_API_KEY} -P steps=download
+> mlflow run . -P steps=download
 ```
 If you want to run the ``download`` and the ``basic_cleaning`` steps, you can similarly do:
 ```bash
-> mlflow run . -P wandb_api_key=${WANDB_API_KEY} -P steps=download,basic_cleaning
+> mlflow run . -P steps=download,basic_cleaning
 ```
 You can override any other parameter in the configuration file using the Hydra syntax, by
 providing it as a ``override`` parameter. For example, say that we want to set the parameter
@@ -145,7 +145,6 @@ modeling -> random_forest -> n_estimators to 10 and etl->min_price to 50:
 
 ```bash
 > mlflow run . \
-  -P wandb_api_key=${WANDB_API_KEY} \
   -P steps=download,basic_cleaning \
   -P override="modeling.random_forest.n_estimators=10 etl.min_price=50"
 ```
@@ -169,7 +168,7 @@ notebook can be understood by other people like your colleagues
    get a sample of the data. The pipeline will also upload it to Weights & Biases:
    
   ```bash
-  > mlflow run . -P wandb_api_key=${WANDB_API_KEY}
+  > mlflow run .
   ```
   
   You will see a message similar to:
@@ -423,7 +422,6 @@ accomplished easily by exploiting the Hydra configuration system:
 
 ```bash
 > mlflow run . \
-  -P wandb_api_key=$WANDB_API_KEY \
   -P steps=train_random_forest \
   -P override="modeling.random_forest.max_depth=10, 50, 100 modeling.random_forest.n_estimators=100, 200, 500 -m"
 ```
@@ -457,7 +455,7 @@ of promoting a model to ``prod`` before it can complete successfully. Therefore,
 activate it explicitly on the command line:
 
 ```bash
-> mlflow run . -P wandb_api_key=$WANDB_API_KEY -P steps=test_regression_model
+> mlflow run . -P steps=test_regression_model
 ```
 
 ### Visualize the pipeline
@@ -487,7 +485,6 @@ train the model on a new sample of data that our company received (``sample2.csv
 ```bash
 > mlflow run https://github.com/giacomov/nyc_airbnb.git \
              -v 1.0.0 \
-             -P wandb_api_key=${WANDB_API_KEY} \
              -P override="etl.sample='sample2.csv'"
 ```
 

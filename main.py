@@ -24,9 +24,6 @@ _steps = [
 @hydra.main(config_name='config')
 def go(config: DictConfig):
 
-    # Make sure we are logged in to Weights & Biases ("wandb")
-    wandb.login(key=config['main']['wandb_api_key'])
-
     # Setup the wandb experiment. All runs will be grouped under this name
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]

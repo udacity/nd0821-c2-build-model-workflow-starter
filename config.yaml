@@ -5,7 +5,6 @@ main:
   project_name: nyc_airbnb
   experiment_name: development
   steps: all
-  wandb_api_key: null
 etl:
   sample: "sample1.csv"
   min_price: 10  # dollars
