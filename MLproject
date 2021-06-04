@@ -5,18 +5,14 @@ entry_points:
   main:
     parameters:
 
-      wandb_api_key:
-        description: API key for Weights & Biases
-        type: str
-
       steps:
         description: Comma-separated list of steps to execute (useful for debugging)
         type: str
         default: all
 
-      override:
+      hydra_options:
         description: Other configuration parameters to override
         type: str
         default: ''
 
-    command: "python main.py main.steps=\\'{steps}\\' main.wandb_api_key={wandb_api_key} $(echo {override})"
+    command: "python main.py main.steps=\\'{steps}\\' $(echo {hydra_options})"

@@ -9,17 +9,15 @@ In this project you will build such a pipeline.
 ## Table of contents
 
 - [Introduction](#build-an-ML-Pipeline-for-Short-Term-Rental-Prices-in-NYC)
-- [Starter kit](#starter-kit)
-  * [Preliminary steps](#preliminary-steps)
-    + [Create environment](#create-environment)
-    + [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
-  * [GitHub](#github)
+- [Preliminary steps](#preliminary-steps)
+  * [Fork the Starter Kit](#fork-the-starter-kit)
+  * [Create environment](#create-environment)
+  * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
   * [Cookie cutter](#cookie-cutter)
-  * [The ``main.py`` file](#the-mainpy-file)
   * [The configuration](#the-configuration)
-  * [Running the pipeline](#running-the-pipeline)
-  * [Pre-existing steps](#pre-existing-steps)
-- [Steps](#steps)
+  * [Running the entire pipeline or just a selection of steps](#Running-the-entire-pipeline-or-just-a-selection-of-steps)
+  * [Pre-existing compponents](#pre-existing-components)
+- [Instructions](#instructions)
   * [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
   * [Data cleaning](#data-cleaning)
   * [Data testing](#data-testing)
@@ -32,24 +30,37 @@ In this project you will build such a pipeline.
   * [Release the pipeline](#release-the-pipeline)
   * [Train the model on a new data sample](#train-the-model-on-a-new-data-sample)
 
-## Starter kit
-You will start working on your project by downloading the starter kit. Create a new GitHub
-repository, and commit and push the starter kit to it.
+## Preliminary steps
+### Fork the Starter kit
+Go to [https://github.com/udacity/nd0821-c2-build-model-workflow-starter](https://github.com/udacity/nd0821-c2-build-model-workflow-starter)
+and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
+repository that is under your control. Now clone the repository locally so you can start working on it:
 
-### Preliminary steps
+```
+git clone https://github.com/[your github username]/nd0821-c2-build-model-workflow-starter.git
+```
 
-#### Create environment
+and go into the repository:
+
+```
+cd nd0821-c2-build-model-workflow-starter
+```
+Commit and push to the repository often while you make progress towards the solution. Remember 
+to add meaningful commit messages.
+
+### Create environment
 Make sure to have conda installed and ready, then create a new environment using the ``environment.yml``
-file provided in the root of the starter kit and activate it:
+file provided in the root of the repository and activate it:
 
 ```bash
 > conda env create -f environment.yml
 > conda activate nyc_airbnb_dev
 ```
 
-#### Get API key for Weights and Biases
-Get your API key from W&B by going to [https://wandb.ai/authorize](https://wandb.ai/authorize) 
-and click on the + icon (copy to clipboard), then paste your key into this command:
+### Get API key for Weights and Biases
+Let's make sure we are logged in to Weights & Biases. Get your API key from W&B by going to 
+[https://wandb.ai/authorize](https://wandb.ai/authorize) and click on the + icon (copy to clipboard), 
+then paste your key into this command:
 
 ```bash
 > wandb login [your API key]
@@ -60,16 +71,12 @@ You should see a message similar to:
 wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/.netrc
 ```
 
-### GitHub
-
-Create a repository named ``nyc_airbnb`` in your github account, copy there the content of the starter kit and
-commit and push. From now on, you will commit your code to the repo in your Github account. 
-Commit and push to the repository often while you make progress towards the solution. Remember 
-to add meaningful commit messages.
-
 ### Cookie cutter
-You are also provided a cookie cutter template that you can use to create stubs for new pipeline steps. Just run
-the cookiecutter and enter the required information. Remember to leave the default when asked for ``arguments``.
+In order to make your job a little easier, you are provided a cookie cutter template that you can use to create 
+stubs for new pipeline components. It is not required that you use this, but it might save you from a bit of 
+boilerplate code. Just run the cookiecutter and enter the required information, and a new component 
+will be created including the `conda.yml` file, the `MLproject` file as well as the script. You can then modify these
+as needed, instead of starting from scratch.
 For example:
 
 ```bash
@@ -100,15 +107,11 @@ The script ``run.py`` will receive the input parameters ``parameter1``, ``parame
 > mlflow run src/step_name -P parameter1=1 -P parameter2=2 -P parameter3="test"
 ```
 
-### The ``main.py`` file
-The pipeline is defined in the ``main.py`` file in the root of the starter kit. The file already
-contains some boilerplate code as well as the download step. Your task will be to develop the
-needed additional step, and then add them to the ``main.py`` file.
-
 ### The configuration
-All the parameters controlling the pipeline are defined in the ``config.yaml`` file defined in
-the root of the starter kit. Open this file and get familiar with its content. 
-This file is only read by the ``main.py`` script (i.e., the pipeline) and its content is
+As usual, the parameters controlling the pipeline are defined in the ``config.yaml`` file defined in
+the root of the starter kit. We will use Hydra to manage this configuration file. 
+Open this file and get familiar with its content. Remember: this file is only read by the ``main.py`` script 
+(i.e., the pipeline) and its content is
 available with the ``go`` function in ``main.py`` as the ``config`` dictionary. For example,
 the name of the project is contained in the ``project_name`` key under the ``main`` section in
 the configuration file. It can be accessed from the ``go`` function as 
@@ -117,11 +120,9 @@ the configuration file. It can be accessed from the ``go`` function as
 NOTE: do NOT hardcode any parameter when writing the pipeline. All the parameters should be 
 accessed from the configuration file.
 
-We will use Hydra to manage this configuration file. This means that every parameter can be
-easily overridden from the command line (see the section Running the pipeline).
-
-### Running the pipeline
-In order to run the pipeline you need to be in the root of the starter kit, then you can execute:
+### Running the entire pipeline or just a selection of steps
+In order to run the pipeline when you are developing, you need to be in the root of the starter kit, 
+then you can execute as usual:
 
 ```bash
 >  mlflow run .
@@ -129,8 +130,8 @@ In order to run the pipeline you need to be in the root of the starter kit, then
 This will run the entire pipeline.
 
 When developing it is useful to be able to run one step at the time. Say you want to run only
-the ``download`` step (the steps are defined at the top of the ``main.py`` file, in the 
-``_steps`` list)
+the ``download`` step. The `main.py` is written so that the steps are defined at the top of the file, in the 
+``_steps`` list, and can be selected by using the `steps` parameter on the command line:
 
 ```bash
 > mlflow run . -P steps=download
@@ -140,21 +141,44 @@ If you want to run the ``download`` and the ``basic_cleaning`` steps, you can si
 > mlflow run . -P steps=download,basic_cleaning
 ```
 You can override any other parameter in the configuration file using the Hydra syntax, by
-providing it as a ``override`` parameter. For example, say that we want to set the parameter
+providing it as a ``hydra_options`` parameter. For example, say that we want to set the parameter
 modeling -> random_forest -> n_estimators to 10 and etl->min_price to 50:
 
 ```bash
 > mlflow run . \
   -P steps=download,basic_cleaning \
-  -P override="modeling.random_forest.n_estimators=10 etl.min_price=50"
+  -P hydra_options="modeling.random_forest.n_estimators=10 etl.min_price=50"
 ```
 
-### Pre-existing steps
+### Pre-existing components
 In order to simulate a real-world situation, we are providing you with some pre-implemented
-re-usable steps (``components``). In order to use them, refer to their ``MLproject`` file: there
-you can find the parameters that they accept with a description.
+re-usable components. While you have a copy in your fork, you will be using them from the original
+repository by accessing them through their GitHub link, like:
 
-## Steps
+```python
+_ = mlflow.run(
+                f"{config['main']['components_repository']}/get_data",
+                "main",
+                parameters={
+                    "sample": config["etl"]["sample"],
+                    "artifact_name": "sample.csv",
+                    "artifact_type": "raw_data",
+                    "artifact_description": "Raw file as downloaded"
+                },
+            )
+```
+where `config['main']['components_repository']` is set to 
+[https://github.com/udacity/nd0821-c2-build-model-workflow-starter#components](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/tree/master/components).
+You can see the parameters that they require by looking into their `MLproject` file:
+
+- `get_data`: downloads the data. [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/get_data/MLproject)
+- `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/train_val_test_split/MLproject)
+
+## Instructions
+
+The pipeline is defined in the ``main.py`` file in the root of the starter kit. The file already
+contains some boilerplate code as well as the download step. Your task will be to develop the
+needed additional step, and then add them to the ``main.py`` file.
 
 ### Exploratory Data Analysis (EDA)
 The scope of this section is to get an idea of how the process of an EDA works in the context of
@@ -423,7 +447,7 @@ accomplished easily by exploiting the Hydra configuration system:
 ```bash
 > mlflow run . \
   -P steps=train_random_forest \
-  -P override="modeling.random_forest.max_depth=10, 50, 100 modeling.random_forest.n_estimators=100, 200, 500 -m"
+  -P hydra_options="modeling.random_forest.max_depth=10, 50, 100 modeling.random_forest.n_estimators=100, 200, 500 -m"
 ```
 
 Look at the Hydra documentation for even more ways to do hyperparameters optimization. Hydra
@@ -485,7 +509,7 @@ train the model on a new sample of data that our company received (``sample2.csv
 ```bash
 > mlflow run https://github.com/giacomov/nyc_airbnb.git \
              -v 1.0.0 \
-             -P override="etl.sample='sample2.csv'"
+             -P hydra_options="etl.sample='sample2.csv'"
 ```
 
 **_NOTE_**: the file ``sample2.csv`` contains more data than ``sample1.csv`` so the training will
