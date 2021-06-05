@@ -386,7 +386,7 @@ contain surprises.
 One of our tests will compare the distribution of the current data sample with a reference, 
 to ensure that there is no unexpected change. Therefore, we first need to define a 
 "reference dataset". We will just tag the latest ``clean_sample.csv`` artifact on W&B as our 
-reference dataset. Go with your browset to ``wandb.ai``, navigate to your project, then to the
+reference dataset. Go with your browser to ``wandb.ai``, navigate to your `nyc_airbnb` project, then to the
 artifact tab. Click on "clean_sample", then on the version with the ``latest`` tag. This is the
 last one we produced in the previous step. Add a tag ``reference`` to it by clicking the "+"
 in the Aliases section on the right:
@@ -403,16 +403,31 @@ def test_row_count(data):
 ```
 which checks that the size of the dataset is reasonable (not too small, not too large).
 
-Then, add another test ``def test_price_range(data, min_price, max_price)`` that checks that 
+Then, add another test ``test_price_range(data, min_price, max_price)`` that checks that 
 the price range is between ``min_price`` and ``max_price`` 
-(hint: you can use the ``data['price'].between(...)`` method).
+(hint: you can use the ``data['price'].between(...)`` method). Also, remember that we are using closures, so the
+name of the variables that your test takes in MUST BE exactly `data`, `min_price` and `max_price`.
 
-Now let's add the test suite to the main file, so that it gets executed as part of our
+Now add the `data_check` component to the main file, so that it gets executed as part of our
 pipeline. Use ``clean_sample.csv:latest`` as ``csv`` and ``clean_sample.csv:reference`` as 
-``ref``. Also, use the configuration for the other parameters. For example, 
+``ref``. Right now they point to the same file, but later on they will not: we will fetch another sample of data
+and therefore the `latest` tag will point to that. 
+Also, use the configuration for the other parameters. For example, 
 use ``config["data_check"]["kl_threshold"]`` for the ``kl_threshold`` parameter. 
 
-Then run the pipeline and make sure the tests are executed and that they pass.
+Then run the pipeline and make sure the tests are executed and that they pass. Remember that you can run just this
+step with:
+
+```bash
+> mlflow run . -P steps="data_check"
+```
+
+You can safely ignore the following DeprecationWarning if you see it:
+
+```
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' 
+is deprecated since Python 3.3, and in 3.10 it will stop working
+```
 
 ### Data splitting
 Use the provided component called ``train_val_test_split`` to split the dataset in training, 

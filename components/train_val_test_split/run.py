@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-This script splits the provided dataframe in train, validation and test
+This script splits the provided dataframe in test and remainder
 """
 import argparse
 import logging
@@ -34,16 +34,8 @@ def go(args):
         stratify=df[args.stratify_by] if args.stratify_by != 'none' else None,
     )
 
-    logger.info("Splitting train and validation")
-    train, val = train_test_split(
-        trainval,
-        test_size=args.val_size,
-        random_state=args.random_seed,
-        stratify=trainval[args.stratify_by] if args.stratify_by != 'none' else None,
-    )
-
     # Save to output files
-    for df, k in zip([train, val, test], ['train', 'val', 'test']):
+    for df, k in zip([trainval, test], ['trainval', 'test']):
         logger.info(f"Uploading {k}_data.csv dataset")
         with tempfile.NamedTemporaryFile("w") as fp:
 
@@ -59,16 +51,12 @@ def go(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Split train, val and test")
+    parser = argparse.ArgumentParser(description="Split test and remainder")
 
     parser.add_argument("input", type=str, help="Input artifact to split")
 
     parser.add_argument(
         "test_size", type=float, help="Size of the test split. Fraction of the dataset, or number of items"
-    )
-
-    parser.add_argument(
-        "val_size", type=float, help="Size of the validation split. Fraction of the train set, or number of items"
     )
 
     parser.add_argument(
