@@ -23,4 +23,4 @@ entry_points:
         type: string
         default: 'none'
 
-    command: "python run.py {input} {test_size} {val_size} --random_seed {random_seed} --stratify_by {stratify_by}"
+    command: "python run.py {input} {test_size} --random_seed {random_seed} --stratify_by {stratify_by}"
