@@ -3,11 +3,6 @@ import numpy as np
 import scipy.stats
 
 
-def test_no_null_values(data):
-
-    assert data.isna().sum().sum() == 0
-
-
 def test_column_names(data):
 
     expected_colums = [
