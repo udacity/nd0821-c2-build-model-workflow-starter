@@ -430,24 +430,21 @@ is deprecated since Python 3.3, and in 3.10 it will stop working
 ```
 
 ### Data splitting
-Use the provided component called ``train_val_test_split`` to split the dataset in training, 
-validation and test set. Add it to the pipeline then run the pipeline. 
+Use the provided component called ``train_val_test_split`` to extract and segregate the test set. 
+Add it to the pipeline then run the pipeline. 
 
 **_HINT_**: The path to the step can
 be expressed as ``mlflow.run(f"{config['main']['components_repository']}/train_val_test_split", ...)``.
 
-As usual, use the
-configuration to fill in the parameters of the step. 
+You can see the parameters accepted by this step [here](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/train_val_test_split/MLproject)
 
 After you execute, you will see something like:
 
 ```
-2021-03-15 01:36:44,818 Uploading train_data.csv dataset
-2021-03-15 01:36:46,395 Uploading val_data.csv dataset
+2021-03-15 01:36:44,818 Uploading trainval_data.csv dataset
 2021-03-15 01:36:47,958 Uploading test_data.csv dataset
 ```
-in the log. This tells you that the script is uploading 3 new datasets: ``train_data.csv``,
-``val_data.csv`` and ``test_data.csv``.
+in the log. This tells you that the script is uploading 2 new datasets: ``trainval_data.csv`` and ``test_data.csv``.
 
 ### Train Random Forest
 Complete the script ``src/train_random_forest/run.py``. You will need to:
