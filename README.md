@@ -431,7 +431,8 @@ is deprecated since Python 3.3, and in 3.10 it will stop working
 
 ### Data splitting
 Use the provided component called ``train_val_test_split`` to extract and segregate the test set. 
-Add it to the pipeline then run the pipeline. 
+Add it to the pipeline then run the pipeline. As usual, use the configuration for the parameters like `test_size`,
+`random_seed` and `stratify_by`. Look at the `modeling` section in the config file.
 
 **_HINT_**: The path to the step can
 be expressed as ``mlflow.run(f"{config['main']['components_repository']}/train_val_test_split", ...)``.
