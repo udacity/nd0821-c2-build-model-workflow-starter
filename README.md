@@ -247,9 +247,8 @@ notebook can be understood by other people like your colleagues
     local_path = wandb.use_artifact("sample.csv:latest").file()
     df = pd.read_csv(local_path)
     ```
-    Note the use of ``save_code=True`` in the call to ``wandb.init``. This makes sure that the
-    code of the notebook is uploaded to W&B for versioning, so that each run of the notebook
-    will be tied to the specific version of the code that run in that step.
+    Note that we use ``save_code=True`` in the call to ``wandb.init`` so the notebook is uploaded and versioned
+    by W&B.
 
 4. Using `pandas-profiling`, create a profile:
    ```python
@@ -448,17 +447,11 @@ After you execute, you will see something like:
 in the log. This tells you that the script is uploading 2 new datasets: ``trainval_data.csv`` and ``test_data.csv``.
 
 ### Train Random Forest
-Complete the script ``src/train_random_forest/run.py``. You will need to:
-1. Download the train and validation data using W&B
-2. Read them with pandas. This is already implemented in the file.
-3. Create a sklearn Pipeline object including the provided Preprocessing transformer as 
-   first element, and the RandomForestRegressor as second element
-4. Fit the pipeline
-5. Upload some metrics to W&B (this is already implemented in the file)
-6. Export the pipeline using MLFlow model export
-7. upload the artifact to W&B (already implemented in the file)
+Complete the script ``src/train_random_forest/run.py``. All the places where you need to insert code are marked by
+a `# YOUR CODE HERE` comment and are delimited by two signs like `######################################`. You can
+find further instructions in the file.
 
-Then add it to ``main.py``. Use the name ``random_forest_export`` as ``output_artifact``.
+Once you are done, add the step to ``main.py``. Use the name ``random_forest_export`` as ``output_artifact``.
 
 **_NOTE_**: the main.py file already provides a variable ``rf_config`` to be passed as the
             ``rf_config`` parameter.
@@ -470,7 +463,7 @@ accomplished easily by exploiting the Hydra configuration system:
 ```bash
 > mlflow run . \
   -P steps=train_random_forest \
-  -P hydra_options="modeling.random_forest.max_depth=10, 50, 100 modeling.random_forest.n_estimators=100, 200, 500 -m"
+  -P hydra_options="modeling.random_forest.max_depth=10,50,100 modeling.random_forest.n_estimators=100,200,500 -m"
 ```
 
 Look at the Hydra documentation for even more ways to do hyperparameters optimization. Hydra
@@ -495,7 +488,7 @@ When you have found the best job, click on its name, then go to its artifacts an
 
 ### Test
 Use the provided step ``test_regression_model`` to test your production model against the
-test set.
+test set. Implement the call to this component in the `main.py` file.
 
 This step is NOT run by default when you run the pipeline. In fact, it needs the manual step
 of promoting a model to ``prod`` before it can complete successfully. Therefore, you have to
@@ -530,13 +523,13 @@ Let's now test that we can run the release using ``mlflow`` without any other pr
 train the model on a new sample of data that our company received (``sample2.csv``):
 
 ```bash
-> mlflow run https://github.com/giacomov/nyc_airbnb.git \
-             -v 1.0.0 \
+> mlflow run https://github.com/[your github username]/nyc_airbnb.git \
+             -v [the version you want to use, like 1.0.0] \
              -P hydra_options="etl.sample='sample2.csv'"
 ```
 
 **_NOTE_**: the file ``sample2.csv`` contains more data than ``sample1.csv`` so the training will
-            be slower.
+            be a little slower.
 
 But, wait! It failed! The test ``test_proper_boundaries`` failed, apparently there is one point
 which is outside of the boundaries. This is an example of a "successful failure", i.e., a test that
