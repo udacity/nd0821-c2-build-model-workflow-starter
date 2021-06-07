@@ -517,9 +517,7 @@ activate it explicitly on the command line:
 
 ### Visualize the pipeline
 You can now go to W&B, go the Artifacts section, select the model export artifact then click on the
-``Graph view`` tab. You will see something like this:
-
-![pipeline graph](images/wandb-pipeline-graph.png "pipeline graph")
+``Graph view`` tab. You will see a representation of your pipeline.
 
 ### Release the pipeline
 First copy the best hyper parameters you found in your ``configuration.yml`` so they become the
@@ -539,8 +537,9 @@ and so on.
 Let's now test that we can run the release using ``mlflow`` without any other pre-requisite. We will
 train the model on a new sample of data that our company received (``sample2.csv``):
 
+(be ready for a surprise, keep reading even if the command fails)
 ```bash
-> mlflow run https://github.com/[your github username]/nyc_airbnb.git \
+> mlflow run https://github.com/[your github username]/nd0821-c2-build-model-workflow-starter.git \
              -v [the version you want to use, like 1.0.0] \
              -P hydra_options="etl.sample='sample2.csv'"
 ```
@@ -552,16 +551,16 @@ But, wait! It failed! The test ``test_proper_boundaries`` failed, apparently the
 which is outside of the boundaries. This is an example of a "successful failure", i.e., a test that
 did its job and caught an unexpected event in the pipeline (in this case, in the data).
 
-You can fix this by adding this line in the proper place in the
-``basic_cleaning`` step:
+You can fix this by adding these two lines in the ``basic_cleaning`` step just before saving the output 
+to the csv file with `df.to_csv`:
 
 ```python
 idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
-df = df[idx]
+df = df[idx].copy()
 ```
 This will drop rows in the dataset that are not in the proper geolocation. 
 
-Then commit your change, make a new release (``1.0.1``) and retry (of course you need to use 
+Then commit your change, make a new release (for example ``1.0.1``) and retry (of course you need to use 
 ``-v 1.0.1`` when calling mlflow this time). Now the run should succeed and voit la', 
 you have trained your new model on the new data.
 
