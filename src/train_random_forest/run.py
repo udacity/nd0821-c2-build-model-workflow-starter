@@ -48,6 +48,9 @@ def go(args):
         rf_config = json.load(fp)
     run.config.update(rf_config)
 
+    # Fix the random seed for the Random Forest, so we get reproducible results
+    rf_config['random_state'] = args.random_seed
+
     ######################################
     # Use run.use_artifact(...).file() to get the train and validation artifact (args.trainval_artifact)
     # and save the returned path in train_local_pat
@@ -60,7 +63,7 @@ def go(args):
     logger.info(f"Minimum price: {y.min()}, Maximum price: {y.max()}")
 
     X_train, X_val, y_train, y_val = train_test_split(
-        X, y, test_size=args.val_size, stratify=X[args.stratify_by]
+        X, y, test_size=args.val_size, stratify=X[args.stratify_by], random_state=args.random_seed
     )
 
     logger.info("Preparing sklearn pipeline")
