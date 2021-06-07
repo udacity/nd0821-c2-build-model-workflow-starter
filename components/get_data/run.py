@@ -6,9 +6,7 @@ import argparse
 import logging
 import os
 
-import requests
 import wandb
-import tempfile
 
 from wandb_utils.log_artifact import log_artifact
 
@@ -21,8 +19,6 @@ def go(args):
     run = wandb.init(job_type="download_file")
     run.config.update(args)
 
-    # We stream the file so that it can be downloaded even if it is bigger
-    # than the available memory
     logger.info(f"Returning sample {args.sample}")
     logger.info(f"Uploading {args.artifact_name} to Weights & Biases")
     log_artifact(
