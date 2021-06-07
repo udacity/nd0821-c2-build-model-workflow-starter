@@ -458,20 +458,27 @@ Once you are done, add the step to ``main.py``. Use the name ``random_forest_exp
 
 ### Optimize hyperparameters
 Re-run the entire pipeline varying the hyperparameters of the Random Forest model. This can be
-accomplished easily by exploiting the Hydra configuration system:
+accomplished easily by exploiting the Hydra configuration system. Use the multi-run feature (adding the `-m` option 
+at the end of the `hydra_options` specification), and try setting the parameter `modeling.max_tfidf_features` to 10, 15
+and 30, and the `modeling.random_forest.max_features` to 0.1, 0.33, 0.5, 0.75, 1.
 
+HINT: if you don't remember the hydra syntax, you can take inspiration from this is example, where we vary 
+two other parameters (this is NOT the solution to this step):
 ```bash
 > mlflow run . \
   -P steps=train_random_forest \
   -P hydra_options="modeling.random_forest.max_depth=10,50,100 modeling.random_forest.n_estimators=100,200,500 -m"
 ```
+you can change this command line to accomplish your task.
 
-Look at the Hydra documentation for even more ways to do hyperparameters optimization. Hydra
-is very powerful, and allows even to use things like Bayesian optimization without any change
+While running this simple experimentation is enough to complete this project, you can also explore more and see if 
+you can improve the performance. You can also look at the Hydra documentation for even more ways to do hyperparameters 
+optimization. Hydra is very powerful, and allows even to use things like Bayesian optimization without any change
 to the pipeline itself.
 
 ### Select the best model
-Go to W&B and select the best performing model. 
+Go to W&B and select the best performing model. We are going to consider the Mean Absolute Error as our target metric,
+so we are going to choose the model with the lowest MAE.
 
 ![wandb](images/wandb_select_best.gif "wandb")
 
@@ -482,15 +489,25 @@ Go to W&B and select the best performing model.
             on the three little dots, then select "Sort asc". This will sort the runs by ascending
             Mean Absolute Error (best result at the top).
 
-When you have found the best job, click on its name, then go to its artifacts and select the 
-"model_export" output artifact.  You can now add a ``prod`` tag to it to mark it as 
+When you have found the best job, click on its name. If you are interested you can explore some of the things we
+tracked, for example the feature importance plot. You should see that the `name` feature has quite a bit of importance
+(depending on your exact choice of parameters it might be the most important feature or close to that). The `name`
+column contains the title of the post on the rental website. Our pipeline performs a very primitive NLP analysis 
+based on [TF-IDF](https://monkeylearn.com/blog/what-is-tf-idf/) (term frequency-inverse document frequency) and can 
+extract a good amount of information from the feature.
+
+Go to the artifact section of the selected job, and select the 
+`model_export` output artifact.  Add a ``prod`` tag to it to mark it as 
 "production ready".
 
 ### Test
 Use the provided step ``test_regression_model`` to test your production model against the
-test set. Implement the call to this component in the `main.py` file.
+test set. Implement the call to this component in the `main.py` file. As usual you can see the parameters in the
+corresponding [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/test_regression_model/MLproject) 
+file. Use the artifact `random_forest_export:prod` for the parameter `mlflow_model` and the test artifact
+`test_data.csv:latest` as `test_artifact`.
 
-This step is NOT run by default when you run the pipeline. In fact, it needs the manual step
+**NOTE**: This step is NOT run by default when you run the pipeline. In fact, it needs the manual step
 of promoting a model to ``prod`` before it can complete successfully. Therefore, you have to
 activate it explicitly on the command line:
 

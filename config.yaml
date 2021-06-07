@@ -20,12 +20,19 @@ modeling:
   random_seed: 42
   # Column to use for stratification (use "none" for no stratification)
   stratify_by: "neighbourhood_group"
+  # Maximum number of features to consider for the TFIDF applied to the title of the
+  # insertion (the column called "name")
+  max_tfidf_features: 30
   # NOTE: you can put here any parameter that is accepted by the constructor of
   # RandomForestRegressor. This is a subsample, but more could be added:
   random_forest:
-    n_estimators: 200
-    max_depth: 50
-    min_samples_split: 5
-    min_samples_leaf: 4
-    n_jobs: 12
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 4
+    min_samples_leaf: 3
+    # Here -1 means all available cores
+    n_jobs: -1
     criterion: mae
+    max_features: 0.33
+    # DO not change the following
+    oob_score: true

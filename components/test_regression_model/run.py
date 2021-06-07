@@ -46,7 +46,8 @@ def go(args):
     logger.info(f"MAE: {mae}")
 
     # Log MAE and r2
-    wandb.log({"r2": r_squared, "mae": mae})
+    run.summary['r2'] = r_squared
+    run.summary['mae'] = mae
 
 
 if __name__ == "__main__":
