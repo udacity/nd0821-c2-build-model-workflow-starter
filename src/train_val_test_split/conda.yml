@@ -9,4 +9,4 @@ dependencies:
   - scikit-learn=0.24.1
   - pip:
       - wandb==0.10.31
-      - git+https://github.com/udacity/nd0821-c2-build-model-workflow-starter.git#egg=wandb-utils&subdirectory=components
+      - git+https://github.com/valeriano-manassero/nd0821-c2-build-model-workflow-starter.git#egg=wandb-utils&subdirectory=components
