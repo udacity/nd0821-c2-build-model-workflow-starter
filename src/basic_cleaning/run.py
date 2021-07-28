@@ -23,11 +23,14 @@ def execute(args):
     artifact_local_path = run.use_artifact(args.input_artifact).file()
 
     dataframe = pd.read_csv(artifact_local_path, index_col="id")
-    min_price = 10
-    max_price = 350
+    min_price = args.min_price
+    max_price = args.max_price
     idx = dataframe['price'].between(min_price, max_price)
     dataframe = dataframe[idx].copy()
+    logger.info("Dataset price outliers removal outside range: %s-%s",
+                 args.min_price, args.max_price)
     dataframe['last_review'] = pd.to_datetime(dataframe['last_review'])
+    logger.info("Dataset last_review data type fix")
 
     tmp_artifact_path = os.path.join(args.tmp_directory, args.output_artifact)
     dataframe.to_csv(tmp_artifact_path)
@@ -43,6 +46,7 @@ def execute(args):
     run.log_artifact(artifact)
 
     artifact.wait()
+    logger.info("Cleaned dataset uploaded to wandb")
 
 
 if __name__ == "__main__":
