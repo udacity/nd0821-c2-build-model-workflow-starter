@@ -6,27 +6,27 @@ entry_points:
     parameters:
 
       input_artifact:
-        description: ## ADD DESCRIPTION
+        description: Input csv to be cleaned
         type: string
 
       output_artifact:
-        description: ## ADD DESCRIPTION
+        description: Cleaned csv to save
         type: string
 
       output_type:
-        description: ## ADD DESCRIPTION
+        description: Artifact type for wandb
         type: string
 
       output_description:
-        description: ## ADD DESCRIPTION
+        description: Arfitact description for wandb
         type: string
 
       min_price:
-        description: ## ADD DESCRIPTION
+        description: Minimum price boundarie for outlier removal
         type: string
 
       max_price:
-        description: ## ADD DESCRIPTION
+        description: Maximum price boundarie for outlier removal
         type: string
 
 
