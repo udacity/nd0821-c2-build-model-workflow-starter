@@ -1,7 +1,6 @@
 """
 Main procedure for MLops pipeline
 """
-import argparse
 import json
 import tempfile
 import os
@@ -19,6 +18,7 @@ _steps = [
 ]
 
 
+#pylint: disable = no-value-for-parameter
 @hydra.main(config_name='config')
 def execute(config: DictConfig):
     """
@@ -69,7 +69,7 @@ def execute(config: DictConfig):
                 "main",
                 parameters={
                     "csv": "clean_sample.csv:latest",
-                    "ref": "clean_sample.csv:v0",
+                    "ref": "clean_sample.csv:reference",
                     "kl_threshold": config['data_check']['kl_threshold'],
                     "min_price": config['etl']['min_price'],
                     "max_price": config['etl']['max_price']
@@ -78,7 +78,7 @@ def execute(config: DictConfig):
 
         if "data_split" in active_steps:
             _ = mlflow.run(
-                os.path.join(root_path, "src", "train_val_test_split"),
+                f"{config['main']['components_repository']}/train_val_test_split",
                 "main",
                 parameters={
                     "input": "clean_sample.csv:latest",
@@ -129,22 +129,4 @@ def execute(config: DictConfig):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Split test and remainder")
-
-    parser.add_argument(
-        "steps",
-        type=str,
-        default="all",
-        help="Comma-separated list of steps to execute (useful for debugging)"
-    )
-
-    parser.add_argument(
-        "hydra_options",
-        type=str,
-        default="",
-        help="Other configuration parameters to override"
-    )
-
-    main_args = parser.parse_args()
-
-    execute(main_args)
+    execute()
