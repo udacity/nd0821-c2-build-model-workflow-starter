@@ -1,7 +1,6 @@
 """
 Main procedure for MLops pipeline
 """
-import argparse
 import json
 import tempfile
 import os
@@ -19,6 +18,7 @@ _steps = [
 ]
 
 
+#pylint: disable = no-value-for-parameter
 @hydra.main(config_name='config')
 def execute(config: DictConfig):
     """
@@ -129,22 +129,4 @@ def execute(config: DictConfig):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Split test and remainder")
-
-    parser.add_argument(
-        "steps",
-        type=str,
-        default="all",
-        help="Comma-separated list of steps to execute (useful for debugging)"
-    )
-
-    parser.add_argument(
-        "hydra_options",
-        type=str,
-        default="",
-        help="Other configuration parameters to override"
-    )
-
-    main_args = parser.parse_args()
-
-    execute(main_args)
+    execute()
