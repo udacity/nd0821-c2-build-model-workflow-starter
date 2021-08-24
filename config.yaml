@@ -1,16 +1,31 @@
 main:
-  components_repository: "https://github.com/udacity/nd0821-c2-build-model-workflow-starter.git#components"
+  components_repository: "https://github.com/MLHafizur/nd0821-c2-build-model-workflow-starter.git#components"
   # All the intermediate files will be copied to this directory at the end of the run.
   # Set this to null if you are running in prod
   project_name: nyc_airbnb
   experiment_name: development
   steps: all
+basic_cleaning:
+  input_artifact: "sample.csv:latest"
+  output_artifact: "clean_sample.csv"
+  output_type: "clean_sample"
+  output_description: "Data with outliers and null values removed"
 etl:
   sample: "sample1.csv"
   min_price: 10  # dollars
   max_price: 350  # dollars
 data_check:
   kl_threshold: 0.2
+  csv: "clean_sample.csv:latest"
+  ref: "clean_sample.csv:reference"
+data_split:
+  input: "clean_sample.csv:latest"
+train_random_forest:
+  output_artifact: "random_forest_export"
+  trainval_artifact: "trainval_data.csv:latest"
+test_regression_model:
+  mlflow_model: "random_forest_export:prod"
+  test_dataset: "test_data.csv:latest"
 modeling:
   # Fraction of data to use for test (the remaining will be used for train and validation)
   test_size: 0.2
@@ -22,7 +37,7 @@ modeling:
   stratify_by: "neighbourhood_group"
   # Maximum number of features to consider for the TFIDF applied to the title of the
   # insertion (the column called "name")
-  max_tfidf_features: 5
+  max_tfidf_features: 15
   # NOTE: you can put here any parameter that is accepted by the constructor of
   # RandomForestRegressor. This is a subsample, but more could be added:
   random_forest:
