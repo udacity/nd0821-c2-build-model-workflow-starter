@@ -88,7 +88,6 @@ script_name [run.py]: run.py
 job_type [my_step]: basic_cleaning
 short_description [My step]: This steps cleans the data
 long_description [An example of a step using MLflow and Weights & Biases]: Performs basic cleaning on the data and save the results in Weights & Biases
-parameters [parameter1,parameter2]: parameter1,parameter2,parameter3
 ```
 
 This will create a step called ``basic_cleaning`` under the directory ``src`` with the following structure:
