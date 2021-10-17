@@ -33,7 +33,7 @@ def go(args: argparse.Namespace):
     # Convert last_review to datetime
     df['last_review'] = pd.to_datetime(df['last_review'])
 
-    df.to_csv(args.output_artifact)
+    df.to_csv(args.output_artifact, index=False)
 
     # upload to W&B
     logger.info("Upload output artifact %s of type %s", args.output_artifact, args.output_type)
