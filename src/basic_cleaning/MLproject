@@ -1,0 +1,34 @@
+name: basic_cleaning
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+
+      input_artifact:
+        description: Path to the CSV file to be cleaned
+        type: string
+
+      output_artifact:
+        description: Path to the CSV cleaned file 
+        type: string
+
+      output_type:
+        description: Artifact type for wandb
+        type: string
+
+      output_description:
+        description: Arfifact description for wandb
+        type: string
+
+      min_price:
+        description: Minimum properties price considered
+        type: float
+
+      max_price:
+        description: Maximum properties price considered
+        type: float
+
+
+    command: >-
+        python run.py  --input_artifact {input_artifact}  --output_artifact {output_artifact}  --output_type {output_type}  --output_description {output_description}  --min_price {min_price}  --max_price {max_price} 
