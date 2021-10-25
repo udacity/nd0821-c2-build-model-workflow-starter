@@ -22,11 +22,11 @@ entry_points:
         type: string
 
       min_price:
-        description: Minimum properties price considered
+        description: Minimum property prices considered
         type: float
 
       max_price:
-        description: Maximum properties price considered
+        description: Maximum property prices considered
         type: float
 
 
