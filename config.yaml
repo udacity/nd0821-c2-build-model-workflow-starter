@@ -23,6 +23,7 @@ modeling:
   # Maximum number of features to consider for the TFIDF applied to the title of the
   # insertion (the column called "name")
   max_tfidf_features: 5
+  export_artifact: "nyc_rental_prices_model"
   # NOTE: you can put here any parameter that is accepted by the constructor of
   # RandomForestRegressor. This is a subsample, but more could be added:
   random_forest:
