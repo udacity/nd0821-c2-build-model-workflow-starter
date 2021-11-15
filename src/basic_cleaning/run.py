@@ -22,9 +22,6 @@ def go(args):
     # particular version of the artifact
     # artifact_local_path = run.use_artifact(args.input_artifact).file()
 
-    ######################
-    # YOUR CODE HERE     #
-    ######################
     # Load data
     local_path = run.use_artifact("sample.csv:latest").file()
     df = pd.read_csv(local_path)
@@ -34,6 +31,9 @@ def go(args):
     min_price, max_price = args.min_price, args.max_price
     logger.info(f"Only keep records with price between {min_price} and {max_price}")
     idx = df['price'].between(min_price, max_price)
+    df = df[idx].copy()
+
+    idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
     df = df[idx].copy()
 
     # Convert last_review to datetime
