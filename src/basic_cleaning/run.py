@@ -26,7 +26,7 @@ def go(args):
     # YOUR CODE HERE     #
     ######################
     # Load data
-    local_path = wandb.use_artifact("sample.csv:latest").file()
+    local_path = run.use_artifact("sample.csv:latest").file()
     df = pd.read_csv(local_path)
     logger.info(f"Loaded data from {local_path} as df: {df.shape}")
 
