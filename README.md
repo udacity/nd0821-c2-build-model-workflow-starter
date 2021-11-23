@@ -1,10 +1,8 @@
 # Build an ML Pipeline for Short-Term Rental Prices in NYC
-You are working for a property management company renting rooms and properties for short periods of 
-time on various rental platforms. You need to estimate the typical price for a given property based 
-on the price of similar properties. Your company receives new data in bulk every week. The model needs 
-to be retrained with the same cadence, necessitating an end-to-end pipeline that can be reused.
 
-In this project you will build such a pipeline.
+This project try to use the NYC rental price data to build the pipeline, the key[important but not the most important] isn't about the model
+But the proper way to organize the code together to make pipeline with different tools [such as MLFlow and wandb] such that the training and
+even deployment process could be scalable and reproducible.
 
 ## W&B & GitHub Links
 https://wandb.ai/ghung/nyc_airbnb
@@ -36,26 +34,8 @@ https://github.com/G-Hung/nd0821-c2-build-model-workflow-starter
 - [Cleaning up](#cleaning-up)
 
 ## Preliminary steps
-### Fork the Starter kit
-Go to [https://github.com/udacity/nd0821-c2-build-model-workflow-starter](https://github.com/udacity/nd0821-c2-build-model-workflow-starter)
-and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
-repository that is under your control. Now clone the repository locally so you can start working on it:
-
-```
-git clone https://github.com/[your github username]/nd0821-c2-build-model-workflow-starter.git
-```
-
-and go into the repository:
-
-```
-cd nd0821-c2-build-model-workflow-starter
-```
-Commit and push to the repository often while you make progress towards the solution. Remember 
-to add meaningful commit messages.
 
 ### Create environment
-Make sure to have conda installed and ready, then create a new environment using the ``environment.yml``
-file provided in the root of the repository and activate it:
 
 ```bash
 > conda env create -f environment.yml
@@ -63,8 +43,8 @@ file provided in the root of the repository and activate it:
 ```
 
 ### Get API key for Weights and Biases
-Let's make sure we are logged in to Weights & Biases. Get your API key from W&B by going to 
-[https://wandb.ai/authorize](https://wandb.ai/authorize) and click on the + icon (copy to clipboard), 
+Get your API key from W&B by going to
+[https://wandb.ai/authorize](https://wandb.ai/authorize) and click on the + icon (copy to clipboard),
 then paste your key into this command:
 
 ```bash
@@ -77,11 +57,7 @@ wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/
 ```
 
 ### Cookie cutter
-In order to make your job a little easier, you are provided a cookie cutter template that you can use to create 
-stubs for new pipeline components. It is not required that you use this, but it might save you from a bit of 
-boilerplate code. Just run the cookiecutter and enter the required information, and a new component 
-will be created including the `conda.yml` file, the `MLproject` file as well as the script. You can then modify these
-as needed, instead of starting from scratch.
+Helper tools to create the MLproject for different components with `conda.yml` and `MLproject`
 For example:
 
 ```bash
@@ -102,7 +78,7 @@ This will create a step called ``basic_cleaning`` under the directory ``src`` wi
 conda.yml  MLproject  run.py
 ```
 
-You can now modify the script (``run.py``), the conda environment (``conda.yml``) and the project definition 
+You can now modify the script (``run.py``), the conda environment (``conda.yml``) and the project definition
 (``MLproject``) as you please.
 
 The script ``run.py`` will receive the input parameters ``parameter1``, ``parameter2``,
