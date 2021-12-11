@@ -9,6 +9,7 @@ import shutil
 import matplotlib.pyplot as plt
 
 import mlflow
+from mlflow.models import infer_signature
 import json
 
 import pandas as pd
@@ -101,16 +102,18 @@ def go(args):
     # HINT: use mlflow.sklearn.save_model
     # YOUR CODE HERE
     #roberi = mlflow.sklearn.save_model(sk_pipe, roberi, serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE)
-    export_path = "random_forest_dir"
-    #signature = mlflow.infer_signature(X_val, y_pred)
+#    export_path = os.path.join("./random_forest_dir", args.output_artifact)
 
-    mlflow.sklearn.save_model(
-        sk_pipe,  # our pipeline
-        export_path,  # Path to a directory for the produced package
-        input_example=X_val.iloc[:2]  # the first few examples
-    )
+#    signature = mlflow.infer_signature(X_val, y_pred)
 
+#    mlflow.sklearn.save_model(
+#        sk_pipe,  # our pipeline
+#        export_path,  # Path to a directory for the produced package
+#        signature=signature,
+#        input_example=X_val.iloc[:2]  # the first few examples
+#    )
 
+    mlflow.sklearn.save_model(sk_pipe, "random_forest_dir")
     # mlflow.sklearn.save_model(sk_model, sk_path_dir_2,
     #                      serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_PICKLE)
     ######################################
@@ -125,10 +128,10 @@ def go(args):
     artifact = wandb.Artifact(
         args.output_artifact,
         type="model_export",
-        description="Random forest model",
-        metadata=args.rf_config,
+        description="Random forest pipeline",
+        metadata=rf_config,
     )
-    artifact.add_dir(export_path)
+    artifact.add_dir("random_forest_dir")
     run.log_artifact(artifact)
 
     ######################################
