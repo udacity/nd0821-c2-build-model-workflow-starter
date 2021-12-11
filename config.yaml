@@ -26,8 +26,8 @@ modeling:
   # NOTE: you can put here any parameter that is accepted by the constructor of
   # RandomForestRegressor. This is a subsample, but more could be added:
   random_forest:
-    n_estimators: 100
-    max_depth: 15
+    n_estimators: 200
+    max_depth: 100
     min_samples_split: 4
     min_samples_leaf: 3
     # Here -1 means all available cores
