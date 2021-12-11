@@ -102,12 +102,11 @@ def go(args):
     # YOUR CODE HERE
     #roberi = mlflow.sklearn.save_model(sk_pipe, roberi, serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE)
     export_path = "random_forest_dir"
-    signature = mlflow.infer_signature(X_val, y_pred)
+    #signature = mlflow.infer_signature(X_val, y_pred)
 
     mlflow.sklearn.save_model(
         sk_pipe,  # our pipeline
         export_path,  # Path to a directory for the produced package
-        signature=signature, # input and output schema
         input_example=X_val.iloc[:2]  # the first few examples
     )
 
@@ -129,7 +128,7 @@ def go(args):
         description="Random forest model",
         metadata=args.rf_config,
     )
-    artifact.add_dir("random_forest_dir")
+    artifact.add_dir(export_path)
     run.log_artifact(artifact)
 
     ######################################
