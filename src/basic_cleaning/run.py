@@ -23,25 +23,20 @@ def go(args):
     artifact_local_path = run.use_artifact(args.input_artifact).file()
     logger.info('Input artifact fetched')
 
-    # read the input csv artifact
+    # Read the input csv artifact
     df = pd.read_csv(artifact_local_path)
 
-    # filter outliers in 'price' column
+    # Filter outliers in 'price' column
     idx = df['price'].between(args.min_price, args.max_price)
     df = df[idx].copy()
 
-    # filter outliers in 'longitude' column
-    idx = df['longitude'].between(args.min_longitude, args.max_longitude) & \
-            df['latitude'].between(args.min_latitude, args.max_latitude)
-    df = df[idx].copy()
-
-    # convert last_review column type from str to datetime
+    # Convert last_review column type from str to datetime
     df['last_review'] = pd.to_datetime(df['last_review'])
     logger.info('Completed cleaning processing')
 
-    # save resultant dataframe to a local file
+    # Save resultant dataframe to a local file
     df.to_csv('clean_sample.csv', index=False)
-    logger.info('Saved df to .CSV')
+    logger.info('Saved df to csv')
 
     output_artifact = wandb.Artifact(
         name=args.output_artifact,
