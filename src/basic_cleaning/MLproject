@@ -6,27 +6,27 @@ entry_points:
     parameters:
 
       input_artifact:
-        description: ## ADD DESCRIPTION
+        description: sample.csv
         type: string
 
       output_artifact:
-        description: ## ADD DESCRIPTION
+        description: clean_sample.csv
         type: string
 
       output_type:
-        description: ## ADD DESCRIPTION
+        description: Pandas dataframe
         type: string
 
       output_description:
-        description: ## ADD DESCRIPTION
+        description: Dataframe after price column cap/collar and converting last_review to datetime
         type: string
 
       min_price:
-        description: ## ADD DESCRIPTION
+        description: Minimum allowed price in the dataset
         type: string
 
       max_price:
-        description: ## ADD DESCRIPTION
+        description: Maximum allowed price in the dataset
         type: string
 
 
