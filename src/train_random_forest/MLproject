@@ -36,6 +36,14 @@ entry_points:
         description: Name for the output artifact
         type: string
 
+      output_type:
+        description: Type of the output artifact
+        type: string
+
+      output_description:
+        description: Description for the output artifact
+        type: string                
+
     command: >-
       python run.py --trainval_artifact {trainval_artifact} \
                     --val_size {val_size} \
@@ -43,4 +51,6 @@ entry_points:
                     --stratify_by {stratify_by} \
                     --rf_config {rf_config} \
                     --max_tfidf_features {max_tfidf_features} \
-                    --output_artifact {output_artifact}
+                    --output_artifact {output_artifact} \
+                    --output_type {output_type} \
+                    --output_description {output_description}                                       
