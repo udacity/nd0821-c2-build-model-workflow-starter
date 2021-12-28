@@ -6,19 +6,19 @@ entry_points:
     parameters:
 
       input_artifact:
-        description: sample.csv
+        description: Input CSV file to be cleaned
         type: string
 
       output_artifact:
-        description: clean_sample.csv
+        description: Output CSV file after cleaning
         type: string
 
       output_type:
-        description: Pandas dataframe
+        description: Pandas dataframe saved as csv
         type: string
 
       output_description:
-        description: Dataframe after price column cap/collar and converting last_review to datetime
+        description: Dataframe after dropping too low/high prices and converting last_review to datetime
         type: string
 
       min_price:
