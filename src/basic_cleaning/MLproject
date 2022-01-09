@@ -1,0 +1,38 @@
+name: basic_cleaning
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+
+      tmp_directory:
+        description: temporary directory for output artifact
+        type: string
+
+      input_artifact:
+        description: Input csv to be cleaned
+        type: string
+
+      output_artifact:
+        description: Cleaned csv to save
+        type: string
+
+      output_type:
+        description: Artifact type for wandb
+        type: string
+
+      output_description:
+        description: Arfitact description for wandb
+        type: string
+
+      min_price:
+        description: Minimum price limit for outlier removal
+        type: string
+
+      max_price:
+        description: Maximum price limit for outlier removal
+        type: string
+
+
+    command: >-
+        python run.py  --tmp_directory {tmp_directory}  --input_artifact {input_artifact}  --output_artifact {output_artifact}  --output_type {output_type}  --output_description {output_description}  --min_price {min_price}  --max_price {max_price}
