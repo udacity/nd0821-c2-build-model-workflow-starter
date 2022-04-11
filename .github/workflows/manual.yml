@@ -33,7 +33,7 @@ jobs:
         project: CONUPDATE
         issuetype: Task
         summary: |
-          Github PR [Assign the ND component] | Repo: ${{ github.repository }}  | PR# ${{github.event.number}}
+          Github PR nd0821 - Machine Learning DevOps Engineer C2 | Repo: ${{ github.repository }}  | PR# ${{github.event.number}}
         description: |
            Repo link: https://github.com/${{ github.repository }}   
            PR no. ${{ github.event.pull_request.number }} 
