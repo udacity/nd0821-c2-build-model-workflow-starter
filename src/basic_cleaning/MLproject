@@ -1,0 +1,36 @@
+name: basic_cleaning
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+
+      input_artifact:
+        description: Initial dataset
+        type: string
+
+      output_artifact:
+        description: Dataset obtained after the cleaning, uploaded to W&B
+        type: string
+
+      output_type:
+        description: Output data type
+        type: string
+
+      output_description:
+        description: Output data description
+        type: string
+
+      min_price:
+        description: "Minimum price limit"
+        type: string
+
+      max_price:
+        description: "Maximum price limit"
+        type: string
+
+
+    command: >-
+        python run.py --input_artifact {input_artifact} --output_artifact {output_artifact} \
+                      --output_type {output_type} --output_description {output_description} \
+                      --min_price {min_price} --max_price {max_price}

@@ -1,8 +1,9 @@
-name: basic_cleaning
+name: train_random_forest
 channels:
   - conda-forge
   - defaults
 dependencies:
+  - python=3.8.12
   - pandas=1.1.4
   - pip=20.3.3
   - mlflow=1.14.1
@@ -11,3 +12,4 @@ dependencies:
   - pillow=8.1.2
   - pip:
       - wandb==0.10.21
+      - matplotlib==3.5.1
