@@ -12,6 +12,7 @@ In this project you will build such a pipeline.
 - [Preliminary steps](#preliminary-steps)
   * [Fork the Starter Kit](#fork-the-starter-kit)
   * [Create environment](#create-environment)
+  * [Manual Conda Environment Creation](#create-conda-environment)
   * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
   * [Cookie cutter](#cookie-cutter)
   * [The configuration](#the-configuration)
@@ -58,6 +59,15 @@ file provided in the root of the repository and activate it:
 > conda activate nyc_airbnb_dev
 ```
 
+### Create Conda environment
+To manually create the Conda environment, run the steps below.
+
+```bash
+conda create --name=nyc_airbnb_dev
+
+conda install mlflow=1.14.1 ipython=7.21.0 notebook=6.2.0 jupyterlab=3.0.10 cookiecutter=1.7.2 hydra-core=1.0.6 matplotlib=3.3.4 pandas=1.2.3 git=2.30.2 pip=20.3.3 wandb=0.10.31
+
+```
 ### Get API key for Weights and Biases
 Let's make sure we are logged in to Weights & Biases. Get your API key from W&B by going to 
 [https://wandb.ai/authorize](https://wandb.ai/authorize) and click on the + icon (copy to clipboard), 
