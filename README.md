@@ -33,18 +33,18 @@ In this project you will build such a pipeline.
 
 ## Preliminary steps
 ### Fork the Starter kit
-Go to [https://github.com/udacity/nd0821-c2-build-model-workflow-starter](https://github.com/udacity/nd0821-c2-build-model-workflow-starter)
+Go to [https://github.com/LopeWale/build-model-workflow-starter](https://github.com/LopeWale/build-model-workflow-starter)
 and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
 repository that is under your control. Now clone the repository locally so you can start working on it:
 
 ```
-git clone https://github.com/[your github username]/nd0821-c2-build-model-workflow-starter.git
+git clone https://github.com/[your github username]/build-model-workflow-starter.git
 ```
 
 and go into the repository:
 
 ```
-cd nd0821-c2-build-model-workflow-starter
+cd build-model-workflow-starter
 ```
 Commit and push to the repository often while you make progress towards the solution. Remember 
 to add meaningful commit messages.
