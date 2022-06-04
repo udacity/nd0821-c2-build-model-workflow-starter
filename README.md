@@ -34,8 +34,7 @@ In this project you will build such a pipeline.
 ## Preliminary steps
 ### Fork the Starter kit
 Go to [https://github.com/DrUkachi/nd0821-c2-build-model-workflow-starter](https://github.com/DrUkachi/nd0821-c2-build-model-workflow-starter)
-and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
-repository that is under your control. Now clone the repository locally so you can start working on it:
+**Please checkout to different branch for my code by using:**
 
 ```
 git clone https://github.com/DrUkachi/nd0821-c2-build-model-workflow-starter.git
@@ -60,19 +59,10 @@ file provided in the root of the repository and activate it:
 > conda activate nyc_airbnb_dev
 ```
 
-### Get API key for Weights and Biases
-Let's make sure we are logged in to Weights & Biases. Get your API key from W&B by going to 
-[https://wandb.ai/authorize](https://wandb.ai/authorize) and click on the + icon (copy to clipboard), 
-then paste your key into this command:
+### My Project details on the Weights and Biases platform
+[Ukachi Osisiogu - NYC Airbnb project on Weights and Biases ](https://wandb.ai/drukachi/nyc_airbnb)
 
-```bash
-> wandb login [your API key]
-```
-
-You should see a message similar to:
-```
-wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/.netrc
-```
+If you need any further information please let me know.
 
 ### Cookie cutter
 In order to make your job a little easier, you are provided a cookie cutter template that you can use to create 
