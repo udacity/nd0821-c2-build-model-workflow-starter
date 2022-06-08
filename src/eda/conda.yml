@@ -9,5 +9,7 @@ dependencies:
   - pip=20.3.3
   - pandas-profiling=2.11.0
   - pyarrow=2.0
+  # Downgraded jinja2 to fix issues with importing pandas_profiling.
+  - jinja2=3.0.3
   - pip:
       - wandb==0.10.31
