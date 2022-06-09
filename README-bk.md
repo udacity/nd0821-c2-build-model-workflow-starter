@@ -12,14 +12,18 @@ MacbookAir M1 (late 2020)
 
 Downloads a sample data set from github and uploads it as an artifact into wandb. The
 path and file name is obtained from the top level `config.yaml` file.
+
+- Input: Download artifact from github.
+- Ouptut: Upload data artifact.
+
 ```
 mlflow run . -P steps=download
 ```
 
 #### 2) data_cleaning
 
-Input: Download artifact from above.
-Ouptut: Upload cleaned data artifact.
+- Input: Download artifact from wandb.
+- Ouptut: Upload cleaned data artifact to wandb.
 
 ```
 mlflow run . -P steps=basic_cleaning
