@@ -11,7 +11,7 @@ MacbookAir M1 (late 2020)
 #### 1) get_data
 
 - Input: Download sample data (csv file) from github.
-- Ouptut: Upload data artifact to wandb.
+- Output: Upload data artifact to wandb.
 
 ```
 mlflow run . -P steps=download
@@ -20,7 +20,7 @@ mlflow run . -P steps=download
 #### 2) data_cleaning
 
 - Input: Download artifact from wandb.
-- Ouptut: Upload cleaned data artifact to wandb.
+- Output: Upload cleaned data artifact to wandb.
 
 ```
 mlflow run . -P steps=basic_cleaning
