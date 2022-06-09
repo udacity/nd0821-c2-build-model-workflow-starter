@@ -10,9 +10,6 @@ MacbookAir M1 (late 2020)
 
 #### 1) get_data
 
-Downloads a sample data set from github and uploads it as an artifact into wandb. The
-path and file name is obtained from the top level `config.yaml` file.
-
 - Input: Download sample data (csv file) from github.
 - Ouptut: Upload data artifact to wandb.
 
