@@ -25,3 +25,9 @@ mlflow run . -P steps=download
 ```
 mlflow run . -P steps=basic_cleaning
 ```
+### Misc Commands
+```
+wandb artifact ls nyc_airbnb
+
+wandb artifact get nyc_airbnb/clean_sample.csv:v0
+```
