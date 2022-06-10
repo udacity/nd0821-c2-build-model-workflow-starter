@@ -38,6 +38,14 @@ mlflow run . -P steps="data_check"
 
 #### 4) Initial Training
 
+- Split Data
+- Train Model
+- Hyper Parameter Tuning
+- Save Model
+
+- Input: Download clean sample data artifact from wandb.
+- Output: Upload trained model artifact to wandb.
+
 #### 4) Pipeline Release and Updates
 
 #### Run Entire Pipeline
