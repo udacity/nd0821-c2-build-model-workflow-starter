@@ -24,18 +24,18 @@ def go(args):
     # YOUR CODE HERE     #
     ######################
     logger.info(f"Download artifact: {args.input_artifact}")
-    local_path = wandb.use_artifact("sample.csv:latest").file()
+    local_path = wandb.use_artifact(args.input_artifact).file()
     df = pd.read_csv(local_path)
     
-    # Drop outliers
-    min_price = 10
-    max_price = 350
+    # Drop outliers based on the price range.
+    min_price = args.min_price
+    max_price = args.max_price
+    logger.info(f"Cleaning data and reformatting between ${min_price} and ${max_price}")
     idx = df['price'].between(min_price, max_price)
     df = df[idx].copy()
-    # Convert last_review to datetime
+    # Convert the last_review column to datetime format
     df['last_review'] = pd.to_datetime(df['last_review'])
-    cleaned_filename = "clean_sample.csv"
-    df.to_csv(cleaned_filename, index=False)
+    df.to_csv(args.output_artifact, index=False)
     
     artifact = wandb.Artifact(
     args.output_artifact,
@@ -52,13 +52,12 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Data cleansing.")
 
-
     parser.add_argument(
         "--input_artifact", 
         ## INSERT TYPE HERE: str, float or int,
         type = str,
         ## INSERT DESCRIPTION HERE,
-        help = "input artifact",
+        help = "input artifact name",
         required=True
     )
 
@@ -67,7 +66,7 @@ if __name__ == "__main__":
         ## INSERT TYPE HERE: str, float or int,
         type = str,
         ## INSERT DESCRIPTION HERE,
-        help = "The output artifact",
+        help = "The output artifact name",
         required=True
     )
 
@@ -76,7 +75,7 @@ if __name__ == "__main__":
         ## INSERT TYPE HERE: str, float or int,
         type = str,
         ## INSERT DESCRIPTION HERE,
-        help = "output type",
+        help = "The output artifact type",
         required=True
     )
 
@@ -85,7 +84,7 @@ if __name__ == "__main__":
         ## INSERT TYPE HERE: str, float or int,
         type = str,
         ## INSERT DESCRIPTION HERE,
-        help = "output description",
+        help = "The output artifact description",
         required=True
     )
 
@@ -106,7 +105,6 @@ if __name__ == "__main__":
         help = "maximum price",
         required=True
     )
-
 
     args = parser.parse_args()
 
