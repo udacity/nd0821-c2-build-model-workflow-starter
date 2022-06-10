@@ -2,9 +2,9 @@
 
 ## Dev Environment
 
-MacbookAir M1 (late 2020)
-
+- Macbook x86_64 (late 2020), Monterey 12.4
 - python=3.9.13
+- Follow README to create a compatible Python/Conda environment
 
 ### Pipeline Components
 
@@ -25,6 +25,26 @@ mlflow run . -P steps=download
 ```
 mlflow run . -P steps=basic_cleaning
 ```
+
+#### 3) Data Checks
+
+- Input: Sample reference artifact from wandb.
+- Input: Sample data (snapshot) artifact from wandb.
+- Output: Logs `pytest` results to standard output.
+
+```
+mlflow run . -P steps="data_check"
+```
+
+#### 4) Initial Training
+
+#### 4) Pipeline Release and Updates
+
+#### Run Entire Pipeline
+```
+mlflow run . -P steps="download,basic_cleaning,data_check"
+```
+
 ### Misc Commands
 ```
 wandb artifact ls nyc_airbnb
