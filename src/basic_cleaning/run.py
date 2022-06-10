@@ -10,7 +10,6 @@ import pandas as pd
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
-
 def go(args):
 
     run = wandb.init(project="nyc_airbnb", group="basic_cleaning", job_type="basic_cleaning")
