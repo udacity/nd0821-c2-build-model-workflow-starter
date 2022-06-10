@@ -12,4 +12,4 @@ dependencies:
   # Downgraded jinja2 to fix issues with importing pandas_profiling.
   - jinja2=3.0.3
   - pip:
-      - wandb==0.10.31
+      - wandb==0.12.18
