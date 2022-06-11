@@ -85,7 +85,16 @@ def go(config: DictConfig):
             ##################
             # Implement here #
             ##################
-            pass
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/train_val_test_split",
+                "main",
+                parameters={
+                    "input": "clean_sample.csv:latest",
+                    "test_size": config["modeling"]["test_size"],
+                    "stratify_by": config["modeling"]["stratify_by"],
+                    "random_seed": config["modeling"]["random_seed"]
+                    },
+            )
 
         if "train_random_forest" in active_steps:
 

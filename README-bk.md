@@ -38,7 +38,15 @@ mlflow run . -P steps="data_check"
 
 #### 4) Initial Training
 
-- Split Data
+- Split data into test and training sets.
+  - Input: Sample data artifact from wandb.
+  - Output: Training artifact to wandb.
+  - Output: Test artifact to wandb.
+
+```
+mlflow run . -P steps="data_split"
+```
+
 - Train Model
 - Hyper Parameter Tuning
 - Save Model
@@ -50,7 +58,7 @@ mlflow run . -P steps="data_check"
 
 #### Run Entire Pipeline
 ```
-mlflow run . -P steps="download,basic_cleaning,data_check"
+mlflow run . -P steps="all"
 ```
 
 ### Misc Commands
